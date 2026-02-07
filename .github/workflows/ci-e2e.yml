@@ -1,0 +1,33 @@
+name: CI / Playwright
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'apps/web/**'
+      - 'playwright/**'
+      - 'package.json'
+      - 'pnpm-lock.yaml'
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Enable pnpm
+        run: corepack enable
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps
+
+      - name: Run Playwright
+        run: pnpm test:e2e
