@@ -1,10 +1,9 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
+set -e
 
 echo "🔍 Running lint..."
-pnpm lint || exit 1
+pnpm lint
 
 echo "🧪 Running typecheck..."
-pnpm build || exit 1
+pnpm build
 
 echo "✅ Pre-push checks passed"
