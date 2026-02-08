@@ -6,6 +6,19 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ESNext",
+    "esModuleInterop": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@config/*": ["src/config/*"],
+      "@lib/*": ["src/lib/*"],
+      "@controllers/*": ["src/controllers/*"],
+      "@repositories/*": ["src/repositories/*"],
+      "@routes/*": ["src/routes/*"],
+      "@services/*": ["src/services/*"],
+      "@utils/*": ["src/utils/*"],
+      "@middleware/*": ["src/middleware/*"]
+    },
 
     "strict": true,
     "isolatedModules": true,

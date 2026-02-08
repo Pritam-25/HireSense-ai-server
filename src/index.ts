@@ -1,12 +1,13 @@
-import express, { Response } from 'express';
+import { Request, Response } from 'express';
+import app from './app.js';
+import { env } from './utils/env.js';
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = env.PORT || 3000;
 
-app.get('/', (res: Response) => {
-  res.send('🚀 Hello from Express + TypeScript + TSX!');
+app.get('/', (_req: Request, res: Response) => {
+  res.send('👋 Hello from HireSense');
 });
 
 app.listen(PORT, () => {
-  console.log(`✅ Server is running at http://localhost:${PORT}`);
+  console.log(`✅ Server running on http://localhost:${PORT}`);
 });
