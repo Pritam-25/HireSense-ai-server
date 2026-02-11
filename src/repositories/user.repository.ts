@@ -1,10 +1,11 @@
-import prisma from '@lib/prisma.js';
-import { User } from 'src/generated/prisma/client.js';
+import prisma from '@infra/db/prisma.js';
+import { User } from '@generated/prisma/client.js';
 
 export const findUserById = async (userId: string): Promise<User | null> => {
-  return prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: { id: userId },
   });
+  return user;
 };
 
 export const findUserByEmail = async (email: string): Promise<User | null> => {

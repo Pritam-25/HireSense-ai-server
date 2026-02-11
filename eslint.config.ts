@@ -42,15 +42,17 @@ export default defineConfig([
       },
       'boundaries/elements': [
         { type: 'controllers', pattern: 'src/controllers/**/*', mode: 'full' },
-        { type: 'services', pattern: 'src/services/**/*', mode: 'full' },
+        { type: 'infra', pattern: 'src/infra/**/*', mode: 'full' },
+        { type: 'middleware', pattern: 'src/middleware/**/*', mode: 'full' },
         {
           type: 'repositories',
           pattern: 'src/repositories/**/*',
           mode: 'full',
         },
-        { type: 'config', pattern: 'src/config/**/*', mode: 'full' },
+        { type: 'routes', pattern: 'src/routes/**/*', mode: 'full' },
+        { type: 'schemas', pattern: 'src/schemas/**/*', mode: 'full' },
+        { type: 'services', pattern: 'src/services/**/*', mode: 'full' },
         { type: 'utils', pattern: 'src/utils/**/*', mode: 'full' },
-        { type: 'lib', pattern: 'src/lib/**/*', mode: 'full' },
       ],
     },
 
@@ -70,10 +72,34 @@ export default defineConfig([
         {
           default: 'disallow',
           rules: [
-            { from: 'controllers', allow: ['services', 'utils'] },
-            { from: 'services', allow: ['repositories', 'utils'] },
-            { from: 'repositories', allow: ['config', 'utils', 'lib'] },
-            { from: 'lib', allow: ['lib', 'utils'] },
+            {
+              from: 'routes',
+              allow: [
+                'routes',
+                'controllers',
+                'middleware',
+                'utils',
+                'schemas',
+              ],
+            },
+            {
+              from: 'controllers',
+              allow: ['controllers', 'services', 'utils', 'schemas'],
+            },
+            {
+              from: 'middleware',
+              allow: ['middleware', 'services', 'utils', 'infra'],
+            },
+            {
+              from: 'services',
+              allow: ['services', 'repositories', 'utils', 'infra', 'schemas'],
+            },
+            {
+              from: 'repositories',
+              allow: ['repositories', 'utils', 'infra'],
+            },
+            { from: 'schemas', allow: ['schemas', 'utils'] },
+            { from: 'infra', allow: ['utils'] },
           ],
         },
       ],

@@ -8,7 +8,7 @@ import {
 } from '@repositories/user.repository.js';
 import { ApiError } from '@utils/apiError.js';
 import { ERROR_CODES } from '@utils/errorCodes.js';
-import { User } from 'src/generated/prisma/client.js';
+import { User } from '@generated/prisma/client.js';
 
 type ClerkEmailAddress = {
   email_address: string;

@@ -1,14 +1,23 @@
 import 'dotenv/config';
 import express, { Express, Router } from 'express';
 import { clerkMiddleware } from '@clerk/express';
-import { errorHandler } from '@middleware/error.middleware.js';
-import { requireAuth } from '@middleware/auth.middleware.js';
-import { userRoutes, webhookRouter } from '@routes/index.js';
+import { errorHandler } from '@middleware/index.js';
+import { requireAuth } from '@middleware/index.js';
+import { userRoutes, webhookRouter, s3Routes } from '@routes/index.js';
+import cors from 'cors';
+import { arcjetMiddleware } from '@infra/security/arcjet.js';
 
 const app: Express = express();
+app.use(express.json());
+
 const apiRouter: Router = Router();
 
-app.use(express.json());
+app.use(
+  cors({
+    origin: 'http://localhost:3000', // your Next.js frontend
+    credentials: true,
+  })
+);
 
 // clerk middleware (session parsing)
 app.use(clerkMiddleware());
@@ -18,7 +27,14 @@ app.use('/api/webhooks/clerk', webhookRouter);
 
 // API routes (all protected)
 apiRouter.use('/user', userRoutes);
-app.use('/api', requireAuth, apiRouter);
+apiRouter.use('/s3', s3Routes);
+
+app.post('/api/debug', (req, res) => {
+  console.log('BODY:', req.body);
+  res.json(req.body);
+});
+
+app.use('/api', requireAuth, arcjetMiddleware, apiRouter);
 
 // error handling middleware (must be last )
 app.use(errorHandler);

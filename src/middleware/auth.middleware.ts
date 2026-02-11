@@ -1,5 +1,5 @@
 import { getAuth } from '@clerk/express';
-import prisma from '@lib/prisma.js';
+import prisma from '@infra/db/prisma.js';
 import { ApiError } from '@utils/apiError.js';
 import { ERROR_CODES } from '@utils/errorCodes.js';
 import { Request, Response, NextFunction } from 'express';
@@ -11,6 +11,7 @@ export const requireAuth = async (
 ) => {
   const { isAuthenticated, userId } = getAuth(req);
 
+  console.log('Authentication check:', { isAuthenticated, userId });
   if (!isAuthenticated) {
     throw new ApiError(401, ERROR_CODES.NOT_AUTHENTICATED);
   }

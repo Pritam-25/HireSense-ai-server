@@ -11,14 +11,15 @@
     "baseUrl": ".",
 
     "paths": {
-      "@config/*": ["src/config/*"],
-      "@lib/*": ["src/lib/*"],
       "@controllers/*": ["src/controllers/*"],
+      "@generated/*": ["src/generated/*"],
+      "@infra/*": ["src/infra/*"],
+      "@middleware/*": ["src/middleware/*"],
       "@repositories/*": ["src/repositories/*"],
       "@routes/*": ["src/routes/*"],
+      "@schemas/*": ["src/schemas/*"],
       "@services/*": ["src/services/*"],
-      "@utils/*": ["src/utils/*"],
-      "@middleware/*": ["src/middleware/*"]
+      "@utils/*": ["src/utils/*"]
     },
 
     "strict": true,
