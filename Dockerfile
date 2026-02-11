@@ -1,61 +1,55 @@
 # -----------------------------
+# Shared base image
+# -----------------------------
+ARG PNPM_VERSION=10.14.0
+
+FROM node:20-alpine AS base
+ARG PNPM_VERSION
+WORKDIR /app
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
+
+
+# -----------------------------
 # 1) Builder stage
 # -----------------------------
-FROM node:20-alpine AS builder
+FROM base AS builder
+RUN apk add --no-cache libc6-compat python3 make g++ git
 
-WORKDIR /app
-
-# Enable pnpm
-RUN corepack enable && corepack prepare pnpm@10.14.0 --activate
-
-# Copy dependency files first (cache-friendly)
+# Install dependencies with caching
 COPY package.json pnpm-lock.yaml* ./
-
-# Install all deps (dev + prod)
 RUN pnpm install --frozen-lockfile
 
-# Copy Prisma schema separately (better caching)
+# Generate Prisma Client (schema now specifies linux-musl target)
 COPY prisma ./prisma
+RUN pnpm prisma generate --schema=prisma/schema.prisma
 
-# Generate Prisma Client
-RUN pnpm prisma generate
-
-# Copy remaining source code
+# Build the TypeScript app
 COPY . .
-
-# Build TypeScript
 RUN pnpm build
+
+# Strip dev dependencies to leave a prod-only node_modules
+RUN pnpm prune --prod
 
 
 # -----------------------------
 # 2) Production stage
 # -----------------------------
 FROM node:20-alpine AS runner
-
 WORKDIR /app
-
 ENV NODE_ENV=production
 
-# Enable pnpm
-RUN corepack enable && corepack prepare pnpm@10.14.0 --activate
+# Ensure Prisma can load native binaries on Alpine
+RUN apk add --no-cache libc6-compat
 
-# Copy dependency files
+# Copy minimal runtime artifacts
 COPY package.json pnpm-lock.yaml* ./
-
-ENV HUSKY=0
-
-# Install ONLY production dependencies
-RUN pnpm install --prod --frozen-lockfile
-
-# Copy compiled app
-COPY --from=builder /app/dist ./dist
-
-# Copy Prisma schema (required at runtime)
+COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/prisma ./prisma
-
-# Copy tsconfig for runtime path resolution
+COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/tsconfig.json ./tsconfig.json
 
 EXPOSE 4000
 
-CMD ["node", "-r", "tsconfig-paths/register", "dist/index.js"]
+CMD ["node", "-r", "tsconfig-paths/register", "dist/index.js"]            

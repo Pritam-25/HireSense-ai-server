@@ -5,3 +5,4 @@ dist
 build
 !.env.example
 /src/generated/prisma
+.vscode
