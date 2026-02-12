@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import app from './app.js';
 import { env } from './utils/env.js';
-import prisma from '@infra/db/prisma.js';
+import prisma from 'src/config/db/prisma.js';
 
 const PORT = env.PORT || 3000;
 

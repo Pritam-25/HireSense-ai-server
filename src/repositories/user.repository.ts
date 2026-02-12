@@ -1,4 +1,4 @@
-import prisma from '@infra/db/prisma.js';
+import prisma from 'src/config/db/prisma.js';
 import { User } from '@generated/prisma/client.js';
 
 export const findUserById = async (userId: string): Promise<User | null> => {

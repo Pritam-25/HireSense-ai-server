@@ -1,15 +1,15 @@
-import { uploadToS3Controller } from '@controllers/index.js';
+import { resumeMatchController } from '@controllers/index.js';
 import { validateSchema } from '@middleware/index.js';
-import { uploadSchema } from '@schemas/index.js';
+import { resumeMatchSchema } from '@schemas/resume_match.schema.js';
 import { asyncHandler } from '@utils/asyncHandler.js';
 import { Router } from 'express';
 
 const router: Router = Router();
 
 router.post(
-  '/upload',
-  validateSchema(uploadSchema),
-  asyncHandler(uploadToS3Controller)
+  '/',
+  validateSchema(resumeMatchSchema),
+  asyncHandler(resumeMatchController)
 );
 
 export default router;

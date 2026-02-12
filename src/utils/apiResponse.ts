@@ -1,11 +1,11 @@
-export const successResponse = (message: string, data?: unknown) => ({
-  success: true,
+export const successResponse = <T>(message: string, data?: T) => ({
+  success: true as const,
   message,
   data,
 });
 
-export const errorResponse = (errorMsg: string, error: unknown) => ({
-  success: false,
-  message: errorMsg,
-  error,
+export const errorResponse = <T>(message: string, error: T) => ({
+  success: false as const,
+  errMsg: message,
+  error, // for backend logging/debugging; not meant for client consumption
 });

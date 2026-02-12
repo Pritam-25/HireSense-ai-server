@@ -1,5 +1,5 @@
 import { getAuth } from '@clerk/express';
-import prisma from '@infra/db/prisma.js';
+import prisma from 'src/config/db/prisma.js';
 import { ApiError } from '@utils/apiError.js';
 import { ERROR_CODES } from '@utils/errorCodes.js';
 import { Request, Response, NextFunction } from 'express';

@@ -2,7 +2,7 @@ import { ZodType } from 'zod';
 import { Request, Response, NextFunction } from 'express';
 import { errorResponse } from '@utils/apiResponse.js';
 
-export const validate =
+export const validateSchema =
   (schema: ZodType) => (req: Request, res: Response, next: NextFunction) => {
     if (!req.body) {
       res

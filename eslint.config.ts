@@ -42,7 +42,7 @@ export default defineConfig([
       },
       'boundaries/elements': [
         { type: 'controllers', pattern: 'src/controllers/**/*', mode: 'full' },
-        { type: 'infra', pattern: 'src/infra/**/*', mode: 'full' },
+        { type: 'config', pattern: 'src/config/**/*', mode: 'full' },
         { type: 'middleware', pattern: 'src/middleware/**/*', mode: 'full' },
         {
           type: 'repositories',
@@ -88,18 +88,18 @@ export default defineConfig([
             },
             {
               from: 'middleware',
-              allow: ['middleware', 'services', 'utils', 'infra'],
+              allow: ['middleware', 'services', 'utils', 'config'],
             },
             {
               from: 'services',
-              allow: ['services', 'repositories', 'utils', 'infra', 'schemas'],
+              allow: ['services', 'repositories', 'utils', 'config', 'schemas'],
             },
             {
               from: 'repositories',
-              allow: ['repositories', 'utils', 'infra'],
+              allow: ['repositories', 'utils', 'config'],
             },
             { from: 'schemas', allow: ['schemas', 'utils'] },
-            { from: 'infra', allow: ['utils'] },
+            { from: 'config', allow: ['utils'] },
           ],
         },
       ],

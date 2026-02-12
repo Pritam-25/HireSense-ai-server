@@ -13,7 +13,7 @@
     "paths": {
       "@controllers/*": ["src/controllers/*"],
       "@generated/*": ["src/generated/*"],
-      "@infra/*": ["src/infra/*"],
+      "@config/*": ["src/config/*"],
       "@middleware/*": ["src/middleware/*"],
       "@repositories/*": ["src/repositories/*"],
       "@routes/*": ["src/routes/*"],
